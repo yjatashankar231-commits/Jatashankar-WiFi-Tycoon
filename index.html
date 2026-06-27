@@ -91,7 +91,9 @@
     <p class="footer-text">Ranext Field Executive Edition</p>
 
     <script>
-        let count = 0;
+        let count = Number(localStorage.getItem("count")) || 0;
+let money = Number(localStorage.getItem("money")) || 0;
+let level = Number(localStorage.getItem("level")) || 1;
         const scoreDisplay = document.getElementById("score");
 
         function installWiFi() {
