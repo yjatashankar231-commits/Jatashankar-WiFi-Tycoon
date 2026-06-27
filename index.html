@@ -107,6 +107,33 @@
             }
         }
     </script>
+    let deferredPrompt;
+
+window.addEventListener("beforeinstallprompt", (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+});
+
+function installWiFi() {
+    count++;
+    scoreDisplay.innerText = count;
+
+    if (deferredPrompt) {
+        deferredPrompt.prompt();
+
+        deferredPrompt.userChoice.then(() => {
+            deferredPrompt = null;
+        });
+    } else {
+        alert("Install option abhi available nahi hai. Chrome menu se 'Add to Home screen' try karein.");
+    }
+
+    if (count === 10) {
+        alert("Zabardast! Pehla area online ho gaya! 🌐");
+    } else if (count === 50) {
+        alert("Shabaash! Jatashankar bhai ne pura chowk cover kar diya! 🔥");
+    }
+}
 
 <script>
 if ("serviceWorker" in navigator) {
