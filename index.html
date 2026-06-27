@@ -81,7 +81,9 @@
     <p class="status">👨‍🔧 Status: Technical Work in Progress...</p>
 
     <div class="score-board">
-        📶 Wi-Fi Installed: <span id="score">0</span>
+📶 Wi-Fi Installed: <span id="score">0</span><br>
+💰 Money: ₹<span id="money">0</span><br>
+⭐ Level: <span id="level">1</span>
     </div>
 
     <button class="game-btn" onclick="installWiFi()">
@@ -95,6 +97,7 @@
 let money = Number(localStorage.getItem("money")) || 0;
 let level = Number(localStorage.getItem("level")) || 1;
         const scoreDisplay = document.getElementById("score");
+        scoreDisplay.innerText = count;
 
         function installWiFi() {
             // Har click par score badhega
@@ -118,7 +121,22 @@ window.addEventListener("beforeinstallprompt", (e) => {
 
 function installWiFi() {
     count++;
-    scoreDisplay.innerText = count;
+money += 100;
+
+if (count >= level * 50) {
+    level++;
+    alert("🎉 Level Up! Welcome to Level " + level);
+}
+
+scoreDisplay.innerText = count;
+const scoreDisplay = document.getElementById("score");
+scoreDisplay.innerText = count;
+document.getElementById("money").innerText = money;
+document.getElementById("level").innerText = level;
+
+localStorage.setItem("count", count);
+localStorage.setItem("money", money);
+localStorage.setItem("level", level);
 
     if (deferredPrompt) {
         deferredPrompt.prompt();
