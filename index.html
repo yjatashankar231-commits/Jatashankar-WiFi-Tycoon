@@ -1,164 +1,107 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#1e3c72">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jatashankar Wi-Fi Tycoon</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-            color: white;
-            text-align: center;
-            padding: 20px;
-            margin: 0;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-
-        h1 {
-            font-size: 28px;
-            margin-bottom: 5px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-
-        .status {
-            font-size: 18px;
-            color: #00ffcc;
-            font-weight: bold;
-            margin-bottom: 20px;
-        }
-
-        .score-board {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 15px 30px;
-            border-radius: 15px;
-            font-size: 22px;
-            backdrop-filter: blur(5px);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            margin-bottom: 30px;
-        }
-
-        /* Game Button styled like a Router/Wi-Fi Zone */
-        .game-btn {
-            background: radial-gradient(circle, #ff416c 0%, #ff4b2b 100%);
-            border: none;
-            color: white;
-            padding: 40px;
-            font-size: 18px;
-            font-weight: bold;
-            border-radius: 50%;
-            width: 160px;
-            height: 160px;
-            cursor: pointer;
-            box-shadow: 0 0 25px #ff4b2b;
-            transition: transform 0.1s ease, box-shadow 0.1s ease;
-            outline: none;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        .game-btn:active {
-            transform: scale(0.92);
-            box-shadow: 0 0 10px #ff4b2b;
-            background: radial-gradient(circle, #ff4b2b 0%, #ff416c 100%);
-        }
-
-        .footer-text {
-            margin-top: 40px;
-            font-size: 14px;
-            opacity: 0.8;
-        }
-    </style>
+    <title>Service & Installation Log System</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body>
+<body class="bg-gray-50 font-sans text-gray-800">
 
-    <h1>⚡ Jatashankar Wi-Fi Tycoon ⚡</h1>
-    <p class="status">👨‍🔧 Status: Technical Work in Progress...</p>
+    <div class="flex h-screen overflow-hidden">
+        
+        <div class="w-64 bg-slate-900 text-white flex flex-col justify-between hidden md:flex">
+            <div class="p-5">
+                <h1 class="text-xl font-bold tracking-wider flex items-center gap-2">
+                    <i class="fa-solid fa-network-wired text-indigo-400"></i> FieldOps Pro
+                </h1>
+                <nav class="mt-10 space-y-3">
+                    <a href="#" class="flex items-center gap-3 px-4 py-3 bg-indigo-600 text-white rounded-lg transition">
+                        <i class="fa-solid fa-pen-to-square"></i> Manual Entry
+                    </a>
+                </nav>
+            </div>
+            <div class="p-5 border-t border-slate-800 text-xs text-slate-400">
+                Logged in as Field Executive
+            </div>
+        </div>
 
-    <div class="score-board">
-📶 Wi-Fi Installed: <span id="score">0</span><br>
-💰 Money: ₹<span id="money">0</span><br>
-⭐ Level: <span id="level">1</span>
-    </div>
+        <div class="flex-1 flex flex-col overflow-y-auto">
+            
+            <header class="bg-white border-b border-gray-200 px-6 py-4 flex justify-between items-center sticky top-0 z-10">
+                <h2 class="text-xl font-semibold text-gray-800">New Activity Log Entry</h2>
+                <button onclick="exportToExcel()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg font-medium flex items-center gap-2 shadow transition cursor-pointer">
+                    <i class="fa-solid fa-file-excel"></i> Export All to Excel
+                </button>
+            </header>
 
-    <button class="game-btn" onclick="installWiFi()">
-        TAP TO<br>INSTALL
-    </button>
+            <main class="p-6 max-w-5xl w-full mx-auto space-y-6">
+                
+                <form id="logForm" onsubmit="handleFormSubmit(event)" class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 space-y-6">
+                    
+                    <div>
+                        <h3 class="text-md font-semibold text-indigo-600 border-b border-gray-100 pb-2 mb-4">
+                            <i class="fa-solid fa-briefcase mr-1"></i> 1. Work & Company Details
+                        </h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Installation Company Name</label>
+                                <input type="text" id="installCompany" required placeholder="Enter company doing installation" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Complaint/Client Company Name</label>
+                                <input type="text" id="complaintCompany" required placeholder="Enter client/complaint company" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            </div>
+                        </div>
+                    </div>
 
-    <p class="footer-text">Ranext Field Executive Edition</p>
+                    <div>
+                        <h3 class="text-md font-semibold text-indigo-600 border-b border-gray-100 pb-2 mb-4">
+                            <i class="fa-solid fa-file-lines mr-1"></i> 2. Manual Write-ups
+                        </h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Installation Manual Notes / Details</label>
+                                <textarea id="installManual" rows="4" required placeholder="Type all installation steps, hardware used, or manual details here..." class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Site Restore Manual Notes / Details</label>
+                                <textarea id="restoreManual" rows="4" required placeholder="Type site restoration process, link status, or manual logs here..." class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+                            </div>
+                        </div>
+                    </div>
 
-    <script>
-        let count = Number(localStorage.getItem("count")) || 0;
-let money = Number(localStorage.getItem("money")) || 0;
-let level = Number(localStorage.getItem("level")) || 1;
-        const scoreDisplay = document.getElementById("score");
-        scoreDisplay.innerText = count;
+                    <div>
+                        <h3 class="text-md font-semibold text-indigo-600 border-b border-gray-100 pb-2 mb-4">
+                            <i class="fa-solid fa-route mr-1"></i> 3. Travel Log (Side to Side)
+                        </h3>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">From (Start Side/Location)</label>
+                                <input type="text" id="travelFrom" required placeholder="e.g., Side A / Office" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">To (Destination Side/Location)</label>
+                                <input type="text" id="travelTo" required placeholder="e.g., Side B / Client Site" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Distance Traveled (Kilometers)</label>
+                                <div class="relative">
+                                    <input type="number" id="distanceKm" step="0.1" required placeholder="0.0" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 pr-10">
+                                    <span class="absolute right-3 top-2.5 text-gray-400 text-sm font-medium">KM</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-        function installWiFi() {
-            // Har click par score badhega
-            count++;
-            scoreDisplay.innerText = count;
-
-            // Alag-alag targets par messages
-            if (count === 10) {
-                alert("Zabardast! Pehla area online ho gaya! 🌐");
-            } else if (count === 50) {
-                alert("Shabaash! Jatashankar bhai ne pura chowk cover kar diya! 🔥");
-            }
-        }
-    </script>
-    let deferredPrompt;
-
-window.addEventListener("beforeinstallprompt", (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
-});
-
-function installWiFi() {
-    count++;
-money += 100;
-
-if (count >= level * 50) {
-    level++;
-    alert("🎉 Level Up! Welcome to Level " + level);
-}
-
-scoreDisplay.innerText = count;
-const scoreDisplay = document.getElementById("score");
-scoreDisplay.innerText = count;
-document.getElementById("money").innerText = money;
-document.getElementById("level").innerText = level;
-
-localStorage.setItem("count", count);
-localStorage.setItem("money", money);
-localStorage.setItem("level", level);
-
-    if (deferredPrompt) {
-        deferredPrompt.prompt();
-
-        deferredPrompt.userChoice.then(() => {
-            deferredPrompt = null;
-        });
-    } else {
-        alert("Install option abhi available nahi hai. Chrome menu se 'Add to Home screen' try karein.");
-    }
-
-    if (count === 10) {
-        alert("Zabardast! Pehla area online ho gaya! 🌐");
-    } else if (count === 50) {
-        alert("Shabaash! Jatashankar bhai ne pura chowk cover kar diya! 🔥");
-    }
-}
-
-<script>
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("service-worker.js");
-}
-</script>
-</body>
-</html>
+                    <div>
+                        <h3 class="text-md font-semibold text-indigo-600 border-b border-gray-100 pb-2 mb-4">
+                            <i class="fa-solid fa-camera mr-1"></i> 4. Media Upload
+                        </h3>
+                        <div class="w-full">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Upload Site / Work Photos</label>
+                            <div class="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:bg-gray-50 transition relative">
+                                <input type="file" id="sitePhotos" multiple accept="image/*" class="absolute inset-0 w
+                                    
