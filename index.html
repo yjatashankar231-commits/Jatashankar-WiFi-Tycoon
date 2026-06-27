@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jatashankar Wi-Fi Tycoon</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        h1 {
+            font-size: 28px;
+            margin-bottom: 5px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .status {
+            font-size: 18px;
+            color: #00ffcc;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .score-board {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px 30px;
+            border-radius: 15px;
+            font-size: 22px;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+        }
+
+        /* Game Button styled like a Router/Wi-Fi Zone */
+        .game-btn {
+            background: radial-gradient(circle, #ff416c 0%, #ff4b2b 100%);
+            border: none;
+            color: white;
+            padding: 40px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 50%;
+            width: 160px;
+            height: 160px;
+            cursor: pointer;
+            box-shadow: 0 0 25px #ff4b2b;
+            transition: transform 0.1s ease, box-shadow 0.1s ease;
+            outline: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .game-btn:active {
+            transform: scale(0.92);
+            box-shadow: 0 0 10px #ff4b2b;
+            background: radial-gradient(circle, #ff4b2b 0%, #ff416c 100%);
+        }
+
+        .footer-text {
+            margin-top: 40px;
+            font-size: 14px;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>⚡ Jatashankar Wi-Fi Tycoon ⚡</h1>
+    <p class="status">👨‍🔧 Status: Technical Work in Progress...</p>
+
+    <div class="score-board">
+        📶 Wi-Fi Installed: <span id="score">0</span>
+    </div>
+
+    <button class="game-btn" onclick="installWiFi()">
+        TAP TO<br>INSTALL
+    </button>
+
+    <p class="footer-text">Ranext Field Executive Edition</p>
+
+    <script>
+        let count = 0;
+        const scoreDisplay = document.getElementById("score");
+
+        function installWiFi() {
+            // Har click par score badhega
+            count++;
+            scoreDisplay.innerText = count;
+
+            // Alag-alag targets par messages
+            if (count === 10) {
+                alert("Zabardast! Pehla area online ho gaya! 🌐");
+            } else if (count === 50) {
+                alert("Shabaash! Jatashankar bhai ne pura chowk cover kar diya! 🔥");
+            }
+        }
+    </script>
+
+</body>
+</html>
